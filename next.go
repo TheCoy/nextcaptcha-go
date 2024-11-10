@@ -11,22 +11,23 @@ import (
 )
 
 const (
-	HOST                        = "https://api.nextcaptcha.com"
-	TIMEOUT                     = 45 * time.Second
-	PENDING_STATUS              = "pending"
-	PROCESSING_STATUS           = "processing"
-	READY_STATUS                = "ready"
-	FAILED_STATUS               = "failed"
-	RECAPTCHAV2_TYPE            = "RecaptchaV2TaskProxyless"
-	RECAPTCHAV2_ENTERPRISE_TYPE = "RecaptchaV2EnterpriseTaskProxyless"
-	RECAPTCHAV3_PROXYLESS_TYPE  = "RecaptchaV3TaskProxyless"
-	RECAPTCHAV3_TYPE            = "RecaptchaV3Task"
-	RECAPTCHA_MOBILE_TYPE       = "RecaptchaMobileProxyless"
-	HCAPTCHA_TYPE               = "HCaptchaTask"
-	HCAPTCHA_PROXYLESS_TYPE     = "HCaptchaTaskProxyless"
-	HCAPTCHA_ENTERPRISE_TYPE    = "HCaptchaEnterpriseTask"
-	FUNCAPTCHA_TYPE             = "FunCaptchaTask"
-	FUNCAPTCHA_PROXYLESS_TYPE   = "FunCaptchaTaskProxyless"
+	HOST                          = "https://api.nextcaptcha.com"
+	TIMEOUT                       = 45 * time.Second
+	PENDING_STATUS                = "pending"
+	PROCESSING_STATUS             = "processing"
+	READY_STATUS                  = "ready"
+	FAILED_STATUS                 = "failed"
+	RECAPTCHAV2_TYPE              = "RecaptchaV2TaskProxyless"
+	RECAPTCHAV2_ENTERPRISE_TYPE   = "RecaptchaV2EnterpriseTaskProxyless"
+	RECAPTCHAV3_PROXYLESS_TYPE    = "RecaptchaV3TaskProxyless"
+	RECAPTCHAV3_HS_PROXYLESS_TYPE = "RecaptchaV3HSTaskProxyLess"
+	RECAPTCHAV3_TYPE              = "RecaptchaV3Task"
+	RECAPTCHA_MOBILE_TYPE         = "RecaptchaMobileProxyless"
+	HCAPTCHA_TYPE                 = "HCaptchaTask"
+	HCAPTCHA_PROXYLESS_TYPE       = "HCaptchaTaskProxyless"
+	HCAPTCHA_ENTERPRISE_TYPE      = "HCaptchaEnterpriseTask"
+	FUNCAPTCHA_TYPE               = "FunCaptchaTask"
+	FUNCAPTCHA_PROXYLESS_TYPE     = "FunCaptchaTaskProxyless"
 )
 
 type TaskBadParametersError struct {
@@ -232,6 +233,7 @@ func (api *NextCaptchaAPI) RecaptchaV2Enterprise(websiteURL, websiteKey string, 
 }
 
 type RecaptchaV3Options struct {
+	Type          string
 	PageAction    string
 	ApiDomain     string
 	ProxyType     string
@@ -246,6 +248,9 @@ func (api *NextCaptchaAPI) RecaptchaV3(websiteURL, websiteKey string, options Re
 		"type":       RECAPTCHAV3_PROXYLESS_TYPE,
 		"websiteURL": websiteURL,
 		"websiteKey": websiteKey,
+	}
+	if options.Type != "" {
+		task["type"] = options.Type
 	}
 	if options.PageAction != "" {
 		task["pageAction"] = options.PageAction
