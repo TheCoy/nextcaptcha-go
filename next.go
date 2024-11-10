@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 )
@@ -61,14 +62,14 @@ func (c *ApiClient) getBalance() (string, error) {
 	resp, err := c.postJSON("/getBalance", data)
 	if err != nil {
 		if c.openLog {
-			log.Printf("Error: %v", err)
+			slog.Debug("[nextcaptcha-go]", "Error", err)
 		}
 		return "", err
 	}
 
 	balance := resp["balance"].(string)
 	if c.openLog {
-		log.Printf("Balance: %s", balance)
+		slog.Debug("[nextcaptcha-go]", "Balance", balance)
 	}
 
 	return balance, nil
@@ -84,15 +85,15 @@ func (c *ApiClient) send(task map[string]interface{}) (map[string]interface{}, e
 	resp, err := c.postJSON("/createTask", data)
 	if err != nil {
 		if c.openLog {
-			log.Printf("Error: %v", err)
-			log.Printf("Data: %v", data)
+			slog.Debug("[nextcaptcha-go]", "Error", err)
+			slog.Debug("[nextcaptcha-go]", "Data", data)
 		}
 		return nil, err
 	}
 
 	taskId := resp["taskId"].(float64)
 	if c.openLog {
-		log.Printf("Task %f created %v", taskId, resp)
+		slog.Debug("[nextcaptcha-go]", "TaskId", taskId, "resp", resp)
 	}
 
 	startTime := time.Now()
@@ -112,22 +113,22 @@ func (c *ApiClient) send(task map[string]interface{}) (map[string]interface{}, e
 		resp, err := c.postJSON("/getTaskResult", data)
 		if err != nil {
 			if c.openLog {
-				log.Printf("Error: %v", err)
+				slog.Debug("[nextcaptcha-go]", "Error", err)
 			}
 			return nil, err
 		}
 
 		status := resp["status"].(string)
 		if c.openLog {
-			log.Printf("Task status: %s", status)
+			slog.Debug("[nextcaptcha-go]", "Task status", status)
 		}
 
 		if status == READY_STATUS {
-			log.Printf("Task %f ready %v", taskId, resp)
+			slog.Debug("[nextcaptcha-go]", "TaskId", taskId, "resp", resp)
 			return resp, nil
 		}
 		if status == FAILED_STATUS {
-			log.Printf("Task %f failed %v", taskId, resp)
+			slog.Debug("[nextcaptcha-go](failed)", "TaskIdId", taskId, "resp", resp)
 			return resp, nil
 		}
 		time.Sleep(1 * time.Second)
@@ -153,7 +154,7 @@ func (c *ApiClient) postJSON(path string, data interface{}) (map[string]interfac
 	if resp.StatusCode != http.StatusOK {
 		body, _ := ioutil.ReadAll(resp.Body)
 		if c.openLog {
-			log.Printf("Error: %d %s", resp.StatusCode, string(body))
+			slog.Debug("[nextcaptcha-go]", "ErrorCode", resp.StatusCode, "body", string(body))
 		}
 		return nil, errors.New(string(body))
 	}
@@ -171,7 +172,7 @@ type NextCaptchaAPI struct {
 }
 
 func NewNextCaptchaAPI(clientKey, solftId, callbackUrl string, openLog bool) *NextCaptchaAPI {
-	log.Printf("NextCaptchaAPI created with clientKey=%s solftId=%s callbackUrl=%s", clientKey, solftId, callbackUrl)
+	slog.Debug("[nextcaptcha-go]", "init", fmt.Sprintf("NextCaptchaAPI created with clientKey=%s solftId=%s callbackUrl=%s", clientKey, solftId, callbackUrl))
 	api := NewApiClient(clientKey, solftId, callbackUrl, openLog)
 	return &NextCaptchaAPI{api}
 }
