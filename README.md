@@ -9,12 +9,12 @@ This SDK provides a simple and easy-to-use Golang interface for interacting with
 You can install the NextCaptcha Golang SDK using the go get command:
 
 ```shell
-go get github.com/nextcaptcha/nextcaptcha-go
+go get github.com/TheCoy/nextcaptcha-go
 ```
 ## Usage
 To start using the NextCaptcha Golang SDK, you first need to obtain your API key (clientKey) from the [NextCaptcha](https://dashboard.nextcaptcha.com) Dashboard. Then, you can create a NextCaptchaAPI instance:
 ```go
-import "github.com/nextcaptcha/nextcaptcha-go"
+import "github.com/TheCoy/nextcaptcha-go"
 
 api := nextcaptcha.NewNextCaptchaAPI(clientKey, "", "", true)
 
@@ -75,7 +75,7 @@ package main
 
 import (
     "fmt"
-    "github.com/nextcaptcha/nextcaptcha-go"
+    "github.com/TheCoy/nextcaptcha-go"
 )
 
 func main() {

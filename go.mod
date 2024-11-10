@@ -1,3 +1,3 @@
-module github.com/nextcaptcha/nextcaptcha-go
+module github.com/TheCoy/nextcaptcha-go
 
 go 1.21.5

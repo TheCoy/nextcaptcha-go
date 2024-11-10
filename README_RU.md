@@ -12,13 +12,13 @@ reCAPTCHA v2 Enterprise, reCAPTCHA v3, reCAPTCHA Mobile, hCaptcha и FunCaptcha.
 Вы можете установить NextCaptcha Golang SDK с помощью команды go get:
 
 ```shell
-go get github.com/nextcaptcha/nextcaptcha-go
+go get github.com/TheCoy/nextcaptcha-go
 ```
 
 ## Использование
 Чтобы начать использовать NextCaptcha Golang SDK, вам сначала нужно получить свой API-ключ (clientKey) на панели управления [NextCaptcha](https://dashboard.nextcaptcha.com). Затем вы можете создать экземпляр NextCaptchaAPI:
 ```go
-import "github.com/nextcaptcha/nextcaptcha-go"
+import "github.com/TheCoy/nextcaptcha-go"
 
 api := nextcaptcha.NewNextCaptchaAPI(clientKey, "", "", true)
 
@@ -87,7 +87,7 @@ package main
 
 import (
     "fmt"
-    "github.com/nextcaptcha/nextcaptcha-go"
+    "github.com/TheCoy/nextcaptcha-go"
 )
 
 func main() {
